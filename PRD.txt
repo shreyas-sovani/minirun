@@ -1,0 +1,151 @@
+Product Requirements Document (PRD)
+Project Title
+MiniRun: A Minimal Container Runtime for Process Isolation and Resource Control
+⸻
+1. Product Overview
+MiniRun is a lightweight container runtime designed to demonstrate core operating system
+principles including process isolation, filesystem sandboxing, and resource management using
+Linux kernel primitives.
+The system allows users to execute applications inside a controlled and isolated environment
+similar to modern container platforms, but implemented from first principles to illustrate how
+operating systems enforce security boundaries and manage system resources.
+The runtime creates isolated execution environments using Linux namespaces, control groups
+(cgroups), and filesystem isolation techniques, enabling safe execution of programs without
+affecting the host system.
+⸻
+2. Problem Statement
+Modern computing platforms frequently execute untrusted or resource-intensive applications.
+Without proper isolation, such programs can:
+• access sensitive host files
+• consume excessive CPU or memory
+• interfere with other processes
+• compromise system stability.
+Traditional solutions such as full virtual machines introduce significant overhead.
+Modern container technologies address this problem by leveraging operating
+system features to create lightweight isolated environments.
+However, container platforms like Docker abstract away the underlying OS
+mechanisms. Students often use these tools without understanding how operating
+systems actually implement isolation and resource control.
+This project aims to bridge that gap by implementing a minimal container runtime
+that directly uses kernel primitives to enforce process isolation and resource
+governance.
+⸻
+3. Project Objectives
+The primary objectives of this project are:
+1. implementation.
+Demonstrate operating system concepts through practical
+2. 3. 4. 5. Implement process isolation using Linux namespaces.
+Enforce system resource limits using control groups (cgroups).
+Create filesystem sandboxing for restricted program execution.
+Provide a minimal command-line runtime to execute programs inside an
+isolated environment.
+⸻
+4. Scope
+In Scope
+The project will implement:
+• Process creation and execution in isolated namespaces
+• Filesystem sandboxing using chroot or mount namespaces
+• Resource limitation using cgroups (CPU and memory)
+• Command-line runtime for executing containerized programs
+• Demonstration of secure execution of user programs
+Out of Scope
+The following advanced container features will not be implemented:
+• image distribution systems
+• container orchestration
+• networking overlays
+• multi-host container clusters
+• container registries
+The goal is to focus on core operating system mechanisms rather than production
+container features.
+⸻
+5. Target Users
+Primary users include:
+• operating systems students
+• system software developers
+• researchers studying containerization and process isolation.
+The runtime will primarily serve as an educational systems engineering tool.
+⸻
+6. System Architecture Overview
+The system consists of a command-line runtime that performs the following sequence:
+1. 2. 3. 4. 5. 6. User invokes the runtime with a program to execute.
+The runtime creates a new process using system calls.
+Kernel namespaces are applied to isolate system resources.
+A restricted filesystem environment is configured.
+Resource limits are enforced using cgroups.
+The target program executes inside the isolated environment.
+⸻
+7. Functional Requirements
+7.1 Container Execution
+The system must allow execution of programs within an isolated environment.
+Example command:
+mini-run <program>
+The specified program must execute inside the containerized environment.
+⸻
+7.2 Process Isolation
+The system must create isolated process environments using PID namespaces, ensuring
+container processes cannot view or interact with host processes.
+⸻
+7.3 Filesystem Sandbox
+The runtime must restrict filesystem access using chroot or mount namespaces to create a
+limited root directory for the container.
+Processes inside the container must not access host filesystem paths outside the sandbox.
+⸻
+7.4 Resource Control
+The runtime must enforce CPU and memory limits using Linux control groups (cgroups).
+Configurable limits should include:
+• maximum memory usage
+• maximum memory usage
+• CPU usage quotas.
+⸻
+7.5 Command Line Interface
+The runtime must provide a CLI for launching containers and configuring limits.
+Example usage:
+mini-run --memory 256MB --cpu 50% python script.py
+⸻
+8. Non-Functional Requirements
+Performance
+Container startup should be lightweight and faster than virtual machine initialization.
+⸻
+Security
+Processes inside the container must be prevented from accessing host resources beyond the
+configured sandbox.
+⸻
+Reliability
+The system must gracefully handle errors such as:
+• missing filesystem resources
+• invalid resource limits
+• failed process creation.
+• failed process creation.
+⸻
+9. Core Operating System Concepts Demonstrated
+The project demonstrates the following OS principles:
+• process lifecycle management
+• namespace-based resource isolation
+• operating system resource allocation and control
+• filesystem abstraction and sandboxing
+• kernel system call interaction
+• security through process isolation.
+⸻
+10. Expected Deliverables
+The project will deliver:
+1. 3. 5. Source code for the container runtime
+2. Documentation explaining system design
+Demonstration of isolated program execution
+4. Performance and functionality evaluation
+Presentation describing operating system concepts used.
+⸻
+11. Potential Use Cases
+The runtime can support applications such as:
+• secure execution of untrusted programs
+• educational demonstration of container technology
+• sandbox environments for testing applications
+• lightweight process isolation for multi-user systems.
+⸻
+12. Future Enhancements
+Possible extensions include:
+• network namespace isolation
+• container image support
+• filesystem layering
+• advanced security policies
+• container orchestration integration.
+⸻
