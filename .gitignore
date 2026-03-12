@@ -1,0 +1,13 @@
+# MiniRun — gitignore
+
+# Compiled binary
+minirun
+
+# Object files
+src/*.o
+
+# Rootfs directory (created by setup_rootfs.sh at runtime)
+rootfs/
+
+# macOS junk
+.DS_Store

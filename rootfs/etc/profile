@@ -1,9 +1,0 @@
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin
-export HOME=/root
-export PS1='[minirun:\w]# '
-alias ll='ls -la'
-echo ""
-echo "  Welcome to MiniRun container!"
-echo "  Isolated PID namespace — you are PID $(cat /proc/self/status | grep ^Pid | awk '{print $2}')"
-echo "  Type 'exit' to leave the container."
-echo ""
