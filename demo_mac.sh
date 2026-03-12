@@ -62,7 +62,7 @@ docker run --rm \
         # Speed up apt
         echo 'APT::Install-Recommends \"false\";' > /etc/apt/apt.conf.d/no-recommends
         apt-get update -qq
-        apt-get install -y -qq gcc make busybox-static 2>&1 | tail -3
+        apt-get install -y -qq build-essential busybox-static 2>&1 | tail -3
 
         echo ''
         echo '  Tools installed:'
