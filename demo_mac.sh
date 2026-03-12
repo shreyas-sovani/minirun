@@ -92,7 +92,7 @@ docker run --rm \
 
         echo ''
         echo 'Container hostname:'
-        sudo ./minirun /minirun/rootfs /bin/hostname
+        ./minirun /minirun/rootfs /bin/hostname
 
         # ══════════════════════════════════════════════════════════════════
         # DEMO 2: PID namespace — container can only see its own processes
@@ -103,7 +103,7 @@ docker run --rm \
 
         echo ''
         echo 'Processes visible INSIDE container (should be just PID 1 + ps):'
-        sudo ./minirun /minirun/rootfs /bin/ps aux
+        ./minirun /minirun/rootfs /bin/ps aux
 
         # ══════════════════════════════════════════════════════════════════
         # DEMO 3: Filesystem isolation — can't see host paths
@@ -116,7 +116,7 @@ docker run --rm \
 
         echo ''
         echo 'Container root ls / (only rootfs contents):'
-        sudo ./minirun /minirun/rootfs /bin/ls /
+        ./minirun /minirun/rootfs /bin/ls /
 
         # ══════════════════════════════════════════════════════════════════
         # DEMO 4: Memory limiting
@@ -126,7 +126,7 @@ docker run --rm \
         echo 'Running dd to write 200MB inside a 50MB-limited container...'
         echo 'Expect: OOM kill (exit code 137)'
         set +e
-        sudo ./minirun --memory 50MB /minirun/rootfs /bin/sh -c \
+        ./minirun --memory 50MB /minirun/rootfs /bin/sh -c \
             'dd if=/dev/zero of=/tmp/bigfile bs=1M count=200 2>&1; echo dd_exit=\$?'
         EXIT_CODE=\$?
         set -e
@@ -145,7 +145,7 @@ docker run --rm \
         echo ''
         echo '━━━  DEMO 5: CPU limit via cgroup  ━━━'
         echo 'Spinning up a busy-loop with --cpu 20 for 3 seconds...'
-        sudo ./minirun --cpu 20 /minirun/rootfs /bin/sh -c \
+        ./minirun --cpu 20 /minirun/rootfs /bin/sh -c \
             'i=0; while [ \$i -lt 1000000 ]; do i=\$((i+1)); done; echo cpu_done' &
         CPID=\$!
         sleep 3
@@ -160,13 +160,13 @@ docker run --rm \
 
         echo 'Test: invalid memory value'
         set +e
-        sudo ./minirun --memory abc /minirun/rootfs /bin/sh 2>&1 | grep -E 'ERROR|invalid'
+        ./minirun --memory abc /minirun/rootfs /bin/sh 2>&1 | grep -E 'ERROR|invalid'
         set -e
 
         echo ''
         echo 'Test: missing rootfs'
         set +e
-        sudo ./minirun /nonexistent/rootfs /bin/sh 2>&1 | grep -E 'ERROR|not found'
+        ./minirun /nonexistent/rootfs /bin/sh 2>&1 | grep -E 'ERROR|not found'
         set -e
 
         echo ''
@@ -183,5 +183,5 @@ echo "  Docker provides the Linux kernel that MiniRun requires."
 echo ""
 echo "  To run interactively:"
 echo "    docker run -it --rm --privileged -v \"\$(pwd):/minirun\" ${IMAGE} bash"
-echo "    # Then inside: cd /minirun && make && bash setup_rootfs.sh && sudo ./minirun ./rootfs /bin/sh"
+echo "    # Then inside: cd /minirun && make && bash setup_rootfs.sh && ./minirun ./rootfs /bin/sh"
 echo ""

@@ -7,7 +7,7 @@
 #   make help      — show this message
 
 CC      = gcc
-CFLAGS  = -Wall -Wextra -std=c11 -g -O2 -Wno-gnu-zero-variadic-macro-arguments
+CFLAGS  = -Wall -Wextra -std=c11 -g -O2
 LDFLAGS =
 
 # Source and output

@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <ctype.h>
+#include <strings.h>   /* strcasecmp */
 
 /*
  * utils.c — Logging helpers and argument parsers.
