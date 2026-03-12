@@ -42,8 +42,53 @@ MiniRun executes programs in an **isolated container environment** without Docke
 | Memory limiting      | cgroup `memory.limit_in_bytes` (v1) or `memory.max` (v2) |
 | CPU throttling       | cgroup `cpu.cfs_quota_us` (v1) or `cpu.max` (v2) |
 
-> **Platform requirement:** Linux only.  
-> macOS does not support Linux namespaces or cgroups. Run on a Linux machine, VM, or WSL2.
+> **Platform requirement:** Linux only (macOS lacks Linux namespaces + cgroups).  
+> **On macOS: use the one-command Docker demo — see [Running on macOS](#running-on-macos) below.**
+
+---
+
+## Running on macOS
+
+MiniRun uses Linux kernel primitives that don't exist on macOS. The included `demo_mac.sh` script handles everything automatically using **Docker Desktop** (which runs a Linux VM under the hood).
+
+### Quick start (one command)
+
+```bash
+# 1. Make sure Docker Desktop is running
+# 2. Then:
+bash demo_mac.sh
+```
+
+That's it. The script will:
+1. Pull a Debian Linux container image
+2. Install `gcc`, `make`, and `busybox-static` inside it
+3. Compile MiniRun
+4. Create the rootfs
+5. Run **6 live demos** showing every isolation feature:
+   - Hostname isolation (UTS namespace)
+   - PID isolation (container sees only PID 1)
+   - Filesystem isolation (container can't see host `/`)
+   - Memory limit enforcement (OOM kill at 50 MB)
+   - CPU throttling (busy-loop capped at 20%)
+   - Error handling (bad args, missing rootfs)
+
+### To get an interactive shell inside the Linux container
+
+```bash
+docker run -it --rm --privileged \
+  -v "$(pwd):/minirun" \
+  debian:bookworm-slim bash
+
+# Then inside:
+apt-get update && apt-get install -y gcc make busybox-static
+cd /minirun
+make
+bash setup_rootfs.sh
+sudo ./minirun ./rootfs /bin/sh
+```
+
+> **Why `--privileged`?**  
+> Namespace creation requires `CAP_SYS_ADMIN`. `--privileged` grants this inside the Docker Linux VM.
 
 ---
 
